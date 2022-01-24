@@ -27,6 +27,7 @@ export default function Signup() {
         name: name,
       })
       .then((res) => {
+        toast.success("Signed up successfully");
         navigate("/auth/login");
       })
       .catch((err) => console.log(err));
@@ -35,7 +36,7 @@ export default function Signup() {
   return (
     <Container className="vh-100">
       <Row className="h-100 align-items-center justify-content-center">
-        <Col xs={9} md={6} lg={5} className="p-5 bg-light bg-gradient rounded">
+        <Col xs={9} md={6} lg={5} className="p-5 bg-white rounded">
           <Row className="gap-3">
             <h1>
               <b>Get Started.</b>

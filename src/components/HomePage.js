@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function HomePage() {
   const quoteStyles = {
     position: "absolute",
-    zIndex: -100,
+    zIndex: 0,
     height: "150px",
     width: "150px",
     top: -70,
@@ -16,14 +16,12 @@ export default function HomePage() {
   return (
     <Container className="vh-100">
       <Row className="align-items-center" style={{ height: "50px" }}>
-        <Col xs={1} md={1}>
+        <Col xs={12} md={5}>
           <img
             src="/Logo.svg"
             alt="logo"
-            style={{ height: "100%", width: "50px", padding: "10px 0" }}
+            style={{ height: "100%", width: "50px", padding: "10px 5px" }}
           />
-        </Col>
-        <Col xs={11} md={4}>
           <strong>Library Management System</strong>
         </Col>
       </Row>
@@ -34,7 +32,7 @@ export default function HomePage() {
               <Col>
                 <h1 className="position-relative">
                   <img src="/quotes.svg" alt="Quotes" style={quoteStyles} />
-                  <b>
+                  <b style={{ position: "relative", zIndex: 1 }}>
                     I do believe something very magical can happen when you read
                     a good book.
                   </b>

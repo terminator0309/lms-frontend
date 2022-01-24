@@ -2,14 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Nav, Row } from "react-bootstrap";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 import { api } from "../../utils/api";
 import { LinkContainer } from "react-router-bootstrap";
+import "./Dashboard.css";
 
 export default function Dashboard({ children, active }) {
   const { user, setuser } = useContext(UserContext);
   const [loading, setloading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
@@ -36,6 +38,9 @@ export default function Dashboard({ children, active }) {
     localStorage.removeItem("userId");
     localStorage.removeItem("token");
 
+    toast.info("Logged out!");
+
+    navigate("/");
     setuser(false);
   };
 

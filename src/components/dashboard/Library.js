@@ -1,5 +1,5 @@
 import { EditFilled } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Badge,
   Button,
@@ -13,6 +13,7 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { UserContext } from "../../App";
 import { api } from "../../utils/api";
 import Loading from "../Loading";
 
@@ -201,6 +202,7 @@ export default function Library() {
   const [toggleEditBookModal, settoggleEditBookModal] = useState(false);
   const [editBook, seteditBook] = useState({});
   const [bookName, setbookName] = useState("");
+  const { user } = useContext(UserContext);
 
   const getBooks = () => {
     const token = localStorage.getItem("token");
@@ -264,12 +266,14 @@ export default function Library() {
                 <Card.Body>
                   <Card.Title>
                     <span>{book.name}</span>
-                    <EditButton
-                      onClick={() => {
-                        if (!toggleEditBookModal) seteditBook(book);
-                        settoggleEditBookModal(!toggleEditBookModal);
-                      }}
-                    />
+                    {user.isAdmin && (
+                      <EditButton
+                        onClick={() => {
+                          if (!toggleEditBookModal) seteditBook(book);
+                          settoggleEditBookModal(!toggleEditBookModal);
+                        }}
+                      />
+                    )}
                   </Card.Title>
                   <Card.Subtitle className="text-muted mb-2">
                     {book.author}

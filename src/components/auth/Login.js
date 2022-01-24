@@ -35,7 +35,7 @@ export default function Login() {
   return (
     <Container className="vh-100 ">
       <Row className="h-100 align-items-center justify-content-center">
-        <Col xs={9} md={6} lg={5} className="p-5 rounded bg-light bg-gradient">
+        <Col xs={9} md={6} lg={5} className="p-5 rounded bg-white">
           <Row className="gap-3">
             <h1>
               <b>Welcome back.</b>
