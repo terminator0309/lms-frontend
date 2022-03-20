@@ -3,15 +3,12 @@ import axios from "axios";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { UserContext } from "../../App";
 import { Link, useNavigate } from "react-router-dom";
-
-const api = axios.create({
-  baseURL: "http://localhost:8080",
-});
+import { api } from "../../utils/api";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setemail] = useState("sandeep@user.com");
-  const [password, setpassword] = useState("sandeep");
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
   const { setuser } = useContext(UserContext);
 
   const handleLogin = (e) => {

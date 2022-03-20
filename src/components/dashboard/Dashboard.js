@@ -108,6 +108,11 @@ export default function Dashboard({ children, active }) {
                   </LinkContainer>
                 </Nav.Item>
                 <Nav.Item>
+                  <LinkContainer to="/dashboard/userdetails">
+                    <Nav.Link eventKey="userdetails">User Details</Nav.Link>
+                  </LinkContainer>
+                </Nav.Item>
+                <Nav.Item>
                   <LinkContainer to="/dashboard/makeadmin">
                     <Nav.Link eventKey="makeadmin">Make admin</Nav.Link>
                   </LinkContainer>

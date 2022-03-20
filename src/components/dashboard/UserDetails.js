@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Row, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { api } from "../../utils/api";
 import CheckEmail from "../auth/CheckEmail";
 import IssuedBookCard from "../Card/IssuedBookCard";
 
-export default function ReturnBooks() {
+export default function UserDetails() {
   const [email, setemail] = useState("");
   const [isEmailVerified, setisEmailVerified] = useState(false);
   const [user, setuser] = useState();
+  const [records, setrecords] = useState([]);
 
   useEffect(() => {
     if (!isEmailVerified) return;
@@ -32,12 +33,15 @@ export default function ReturnBooks() {
       .catch((err) => console.log(err));
   }, [isEmailVerified]);
 
-  const handleBookReturn = (bookId) => {
+  useEffect(() => {
+    if (!isEmailVerified) return;
+
     const token = localStorage.getItem("token");
+
     api
       .post(
-        "/bookreturn",
-        { email: email, bookId: bookId },
+        "/auth/userdetails",
+        { email: email },
         {
           headers: {
             authorization: `Bearer ${token}`,
@@ -45,25 +49,17 @@ export default function ReturnBooks() {
         }
       )
       .then((res) => {
-        toast.success(res.data.message);
-        const updatedBooksIssued = user.booksIssued.filter(
-          (book) => book.bookId._id !== bookId
-        );
-        setuser((prevUserData) => ({
-          ...prevUserData,
-          booksIssued: updatedBooksIssued,
-        }));
+        setrecords(res.data);
+        console.log(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.message);
-      });
-  };
+      .catch((err) => console.log(err));
+  }, [isEmailVerified]);
 
   const resetDetails = () => {
     setemail("");
     setisEmailVerified(false);
     setuser(null);
+    setrecords(null);
   };
   return (
     <>
@@ -84,20 +80,36 @@ export default function ReturnBooks() {
             {user.booksIssued.length > 0 ? (
               user.booksIssued.map((book) => (
                 <Col key={book._id} md={6} className=" mt-3">
-                  <IssuedBookCard
-                    book={book}
-                    isReturn={true}
-                    handleBookReturn={handleBookReturn}
-                  />
+                  <IssuedBookCard book={book} isReturn={false} />
                 </Col>
               ))
             ) : (
               <Col>
-                <h2>No issued books found</h2>
-                <Button variant="warning" onClick={resetDetails}>
-                  Go back
-                </Button>
+                <h2>No book is currently issued</h2>
               </Col>
+            )}
+            <h2 style={{ marginTop: "30px", marginBottom: "10px" }}>
+              User Record:
+            </h2>
+            {records.length > 0 && (
+              <Table striped bordered>
+                <thead>
+                  <th>#</th>
+                  <th>Book</th>
+                  <th>Author</th>
+                  <th>Issue date</th>
+                </thead>
+                <tbody>
+                  {records.map((record, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{record.bookId.name}</td>
+                      <td>{record.bookId.author}</td>
+                      <td>{record.issueDate}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             )}
           </Row>
         </>

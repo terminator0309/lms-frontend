@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Form,
@@ -30,10 +30,6 @@ function BooksModal({ show, handleClose, books, setbooks, reset, email }) {
         }
       )
       .then((res) => {
-        if (res.status !== 200) {
-          console.log("hey", res);
-        }
-        console.log(res);
         toast.success(res.data.message);
         reset();
       })
@@ -95,13 +91,21 @@ function BooksModal({ show, handleClose, books, setbooks, reset, email }) {
 }
 
 export default function IssueBooks() {
-  const [email, setemail] = useState("sandeep@user.com");
+  const [email, setemail] = useState("");
   const [isEmailVerified, setisEmailVerified] = useState(false);
   const [bookName, setbookName] = useState("");
   const [booksMatched, setbooksMatched] = useState([]);
   const [selectedBooks, setselectedBooks] = useState([]);
   const [toggleModal, settoggleModal] = useState(false);
   const [searched, setsearched] = useState(false);
+
+  // opening checkout modal because maximum checkout size is reached
+  useEffect(() => {
+    if (selectedBooks.length === 5) {
+      toast.info("Maximum limit of checkout reached.");
+      settoggleModal(true);
+    }
+  }, [selectedBooks]);
 
   const findBooks = (e) => {
     e.preventDefault();
@@ -170,7 +174,7 @@ export default function IssueBooks() {
                 <Button
                   type="submit"
                   variant="primary"
-                  disabled={!bookName.length}
+                  disabled={!bookName.length || selectedBooks.length >= 5}
                 >
                   Find books
                 </Button>
@@ -225,24 +229,24 @@ export default function IssueBooks() {
                     </Col>
                   ))}
                 </Row>
-                <Button
-                  variant="success"
-                  onClick={() => settoggleModal(!toggleModal)}
-                >
-                  Issue all
-                </Button>
-                <BooksModal
-                  show={toggleModal}
-                  handleClose={() => settoggleModal(false)}
-                  books={selectedBooks}
-                  setbooks={setselectedBooks}
-                  email={email}
-                  reset={resetDetails}
-                />
               </>
             ) : (
               searched && <h1>No book found</h1>
             )}
+            <Button
+              variant="success"
+              onClick={() => settoggleModal(!toggleModal)}
+            >
+              Checkout
+            </Button>
+            <BooksModal
+              show={toggleModal}
+              handleClose={() => settoggleModal(false)}
+              books={selectedBooks}
+              setbooks={setselectedBooks}
+              email={email}
+              reset={resetDetails}
+            />
           </>
         )}
       </div>

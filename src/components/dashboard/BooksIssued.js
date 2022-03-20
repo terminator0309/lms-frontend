@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Card, Col } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { api } from "../../utils/api";
-import { convertDate, returnDateOfBook } from "../../utils/date";
+import IssuedBookCard from "../Card/IssuedBookCard";
 
 export default function BooksIssued() {
   const [booksIssued, setbooksIssued] = useState([]);
@@ -18,7 +18,7 @@ export default function BooksIssued() {
         },
       })
       .then((res) => {
-        setbooksIssued(res.data);
+        setbooksIssued(res.data.booksIssued);
         setloading(false);
       })
       .catch((err) => {
@@ -32,23 +32,13 @@ export default function BooksIssued() {
       {booksIssued.length === 0 || loading ? (
         <h1> No books issued </h1>
       ) : (
-        booksIssued.map((book) => (
-          <Col key={book._id} md={6} className="py-2">
-            <Card>
-              <Card.Body>
-                <Card.Title>{book.bookId.name}</Card.Title>
-                <Card.Subtitle className="text-muted mb-2">
-                  {book.bookId.author}
-                </Card.Subtitle>
-                <Card.Text>
-                  Issued On: {convertDate(book.issuedDate)}
-                  <br />
-                  Return Date: {returnDateOfBook(book.issuedDate)}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))
+        <Row>
+          {booksIssued.map((book) => (
+            <Col key={book._id} md={6} className=" mt-3">
+              <IssuedBookCard book={book} isReturn={false} />
+            </Col>
+          ))}
+        </Row>
       )}
     </>
   );

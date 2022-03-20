@@ -14,6 +14,7 @@ import IssueBooks from "./components/dashboard/IssueBooks";
 import BooksIssued from "./components/dashboard/BooksIssued";
 import Dashboard from "./components/dashboard/Dashboard";
 import { Slide, ToastContainer } from "react-toastify";
+import UserDetails from "./components/dashboard/UserDetails";
 
 export const UserContext = createContext({});
 
@@ -42,6 +43,7 @@ function App() {
             <Route path="returnbooks" element={<ReturnBooks />} />
             <Route path="issuebooks" element={<IssueBooks />} />
             <Route path="booksissued" element={<BooksIssued />} />
+            <Route path="userdetails" element={<UserDetails />} />
           </Route>
           <Route path="*" element={<h1>404</h1>} />
         </Routes>
